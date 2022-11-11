@@ -2,9 +2,13 @@ package com.lazaretov.tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.lazaretov.helpers.Attach;
 import com.lazaretov.pages.RegistrationFormPage;
+import io.qameta.allure.*;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.lazaretov.testData.UserInfo.*;
@@ -22,7 +26,21 @@ public class RegistrationFormWithObjectsTests {
         Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
     }
 
+    @AfterEach
+    void addAttachments() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+    }
+
     @Test
+    @Feature("Форма регистрации")
+    @Story("Заполнение всех полей")
+    @Owner("lazaretov")
+    @Severity(SeverityLevel.NORMAL)
+    @Link(value = "Testing site", url = "https://demoqa.com")
+    @DisplayName("Проверка полей формы регистрации")
     void fillFormTest() {
         step("Open and fill form", () -> {
             registrationFormPage.openPage()
